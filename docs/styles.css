@@ -29,3 +29,15 @@ button.primary { background: var(--accent); color: #fff; border-color: var(--acc
 .note { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--line); margin-top: 24px; padding-top: 10px; }
 @media (max-width: 640px) { .nutrition { grid-template-columns: repeat(3, 1fr); } .cols { grid-template-columns: 1fr; } }
 .meta { margin: 8px 0 0; font-size: .85rem; color: var(--muted); }
+.page { display: grid; grid-template-columns: 300px 1fr; gap: 20px; align-items: start; }
+.profile { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px; position: sticky; top: 12px; }
+.profile h2 { margin-top: 0; font-size: 1.1rem; }
+fieldset { border: 0; padding: 0; margin: 0 0 12px; }
+legend { font-weight: 600; margin-bottom: 6px; }
+.targets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.targets label { display: flex; flex-direction: column; font-size: .85rem; gap: 4px; }
+input[type=number] { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; width: 100%; }
+.checks { display: flex; flex-direction: column; gap: 4px; }
+.checks label { display: flex; gap: 8px; align-items: center; text-transform: capitalize; }
+.profile .tabs button { padding: 6px 10px; font-size: .9rem; }
+@media (max-width: 800px) { .page { grid-template-columns: 1fr; } .profile { position: static; } }
