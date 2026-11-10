@@ -36,3 +36,15 @@ test('a recipe must carry every chosen diet', () => {
   assert.equal(fitsDiets(findRecipe('overnight-oats'), ['vegan']), false);
   assert.equal(fitsDiets(findRecipe('turkey-avocado'), []), true);
 });
+
+test('allergies hide every recipe that contains them', async () => {
+  const { isSafe, visibleRecipes } = await import('../src/lib/profile.js');
+  const { RECIPES } = await import('../src/lib/recipes.js');
+  assert.equal(isSafe(findRecipe('pb-banana-toast'), ['peanuts']), false);
+  assert.equal(isSafe(findRecipe('lentil-soup'), ['peanuts', 'milk']), true);
+  const p = { ...defaultProfile(), allergies: ['milk', 'wheat'] };
+  const { shown, hiddenForAllergies } = visibleRecipes(RECIPES, p);
+  assert.ok(shown.every(r => !r.allergens.includes('milk') && !r.allergens.includes('wheat')));
+  assert.equal(shown.length + hiddenForAllergies, RECIPES.length);
+  assert.ok(hiddenForAllergies > 0);
+});

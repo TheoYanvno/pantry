@@ -52,3 +52,15 @@ export function saveProfile(profile, storage = globalThis.localStorage) {
 export function fitsDiets(recipe, diets) {
   return diets.every(d => recipe.diets.includes(d));
 }
+
+// A recipe is safe only when it contains none of the person's allergens.
+export function isSafe(recipe, allergies) {
+  return !recipe.allergens.some(a => allergies.includes(a));
+}
+
+// The recipes to show, plus how many were hidden for allergies (so the page can say so).
+export function visibleRecipes(recipes, profile, meal = 'all') {
+  const pool = recipes.filter(r => (meal === 'all' || r.meal === meal) && fitsDiets(r, profile.diets));
+  const shown = pool.filter(r => isSafe(r, profile.allergies));
+  return { shown, hiddenForAllergies: pool.length - shown.length };
+}

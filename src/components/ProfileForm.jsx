@@ -1,5 +1,5 @@
 import { GOALS, LIMITS, withGoal } from '../lib/profile.js';
-import { DIETS } from '../lib/recipes.js';
+import { DIETS, ALLERGENS } from '../lib/recipes.js';
 
 // The profile form: goal, daily targets and diets. Changes save as you go.
 export default function ProfileForm({ profile, onChange }) {
@@ -34,6 +34,15 @@ export default function ProfileForm({ profile, onChange }) {
         <div className="checks">
           {DIETS.map(d => (
             <label key={d}><input type="checkbox" checked={profile.diets.includes(d)} onChange={() => toggle('diets', d)} /> {d}</label>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Allergies and intolerances</legend>
+        <p className="muted small">Recipes with any of these are hidden.</p>
+        <div className="checks two">
+          {ALLERGENS.map(a => (
+            <label key={a}><input type="checkbox" checked={profile.allergies.includes(a)} onChange={() => toggle('allergies', a)} /> {a}</label>
           ))}
         </div>
       </fieldset>

@@ -1,6 +1,7 @@
 // A recipe in full: nutrition per serving, ingredients and steps.
-export default function RecipeDetail({ recipe, onBack }) {
+export default function RecipeDetail({ recipe, onBack, allergies = [] }) {
   const n = recipe.nutrition;
+  const clash = recipe.allergens.filter(a => allergies.includes(a));
   return (
     <article className="detail" aria-labelledby="recipe-title">
       <button onClick={onBack}>← All recipes</button>
@@ -12,6 +13,7 @@ export default function RecipeDetail({ recipe, onBack }) {
           ? recipe.allergens.map(a => <span key={a} className="chip allergen">contains {a}</span>)
           : <span className="chip">none of the 9 major allergens</span>}
       </div>
+      {clash.length > 0 && <p className="warning" role="alert">This recipe contains {clash.join(' and ')}, which you listed as an allergy.</p>}
       <div className="nutrition" aria-label="Nutrition per serving">
         <div><strong>{n.calories}</strong>calories</div>
         <div><strong>{n.protein} g</strong>protein</div>

@@ -3,7 +3,7 @@ import { RECIPES, MEALS, findRecipe } from './lib/recipes.js';
 import RecipeCard from './components/RecipeCard.jsx';
 import RecipeDetail from './components/RecipeDetail.jsx';
 import ProfileForm from './components/ProfileForm.jsx';
-import { loadProfile, saveProfile, cleanProfile, fitsDiets } from './lib/profile.js';
+import { loadProfile, saveProfile, cleanProfile, visibleRecipes } from './lib/profile.js';
 
 export default function App() {
   const [meal, setMeal] = useState('all');
@@ -11,7 +11,7 @@ export default function App() {
   const [profile, setProfile] = useState(loadProfile);
   useEffect(() => { saveProfile(cleanProfile(profile)); }, [profile]);
   const open = openId ? findRecipe(openId) : null;
-  const shown = RECIPES.filter(r => (meal === 'all' || r.meal === meal) && fitsDiets(r, profile.diets));
+  const { shown, hiddenForAllergies } = visibleRecipes(RECIPES, cleanProfile(profile), meal);
 
   return (
     <>
@@ -20,7 +20,7 @@ export default function App() {
         <div><h1>Pantry</h1><p>Meals that fit your goal, your needs and your allergies</p></div>
       </header>
       <main>
-        {open ? <RecipeDetail recipe={open} onBack={() => setOpenId(null)} /> : (
+        {open ? <RecipeDetail recipe={open} allergies={cleanProfile(profile).allergies} onBack={() => setOpenId(null)} /> : (
           <div className="page">
           <ProfileForm profile={profile} onChange={setProfile} />
           <section aria-labelledby="recipes-title">
@@ -30,7 +30,7 @@ export default function App() {
                 <button key={m} aria-pressed={meal === m} onClick={() => setMeal(m)}>{m === 'all' ? 'All meals' : m[0].toUpperCase() + m.slice(1)}</button>
               ))}
             </div>
-            <p className="muted small" role="status">{shown.length} recipe{shown.length === 1 ? '' : 's'}{profile.diets.length ? ` that are ${profile.diets.join(' and ')}` : ''}</p>
+            <p className="muted small" role="status">{shown.length} recipe{shown.length === 1 ? '' : 's'}{profile.diets.length ? ` that are ${profile.diets.join(' and ')}` : ''}{hiddenForAllergies ? ` · ${hiddenForAllergies} hidden for your allergies` : ''}</p>
             <div className="grid">{shown.map(r => <RecipeCard key={r.id} recipe={r} onOpen={setOpenId} />)}</div>
           </section>
           </div>
