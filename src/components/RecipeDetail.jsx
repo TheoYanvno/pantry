@@ -1,7 +1,12 @@
+import { useState } from 'react';
+import { scaleRecipe, formatIngredient } from '../lib/servings.js';
+
 // A recipe in full: nutrition per serving, ingredients and steps.
 export default function RecipeDetail({ recipe, onBack, allergies = [] }) {
   const n = recipe.nutrition;
   const clash = recipe.allergens.filter(a => allergies.includes(a));
+  const [servings, setServings] = useState(recipe.servings);
+  const scaled = scaleRecipe(recipe, servings);
   return (
     <article className="detail" aria-labelledby="recipe-title">
       <button onClick={onBack}>← All recipes</button>
@@ -24,7 +29,13 @@ export default function RecipeDetail({ recipe, onBack, allergies = [] }) {
       <div className="cols">
         <section>
           <h3>Ingredients</h3>
-          <ul>{recipe.ingredients.map((x, k) => <li key={k}>{x.qty} {x.unit} {x.item}</li>)}</ul>
+          <div className="stepper" role="group" aria-label="Servings">
+            <button aria-label="Fewer servings" disabled={scaled.servings <= 1} onClick={() => setServings(scaled.servings - 1)}>−</button>
+            <span aria-live="polite"><strong>{scaled.servings}</strong> serving{scaled.servings === 1 ? '' : 's'}</span>
+            <button aria-label="More servings" disabled={scaled.servings >= 24} onClick={() => setServings(scaled.servings + 1)}>+</button>
+          </div>
+          <ul>{scaled.ingredients.map((x, k) => <li key={k}>{formatIngredient(x)}</li>)}</ul>
+          <p className="muted small">About {n.calories * scaled.servings} calories and {n.protein * scaled.servings} g protein in all.</p>
         </section>
         <section>
           <h3>Steps</h3>

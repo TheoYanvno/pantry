@@ -52,3 +52,6 @@ input[type=number] { font: inherit; padding: 6px 8px; border: 1px solid var(--li
 .fit-bar span { display: block; height: 100%; border-radius: 99px; }
 .fit-bar .great { background: #22c55e; } .fit-bar .good { background: #eab308; } .fit-bar .low { background: #f97316; }
 .fit-reason { font-size: .78rem; color: var(--muted); }
+.stepper { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 99px; padding: 4px; }
+.stepper button { width: 32px; height: 32px; padding: 0; border-radius: 50%; font-size: 1.1rem; }
+.stepper button:disabled { opacity: .4; cursor: default; }
