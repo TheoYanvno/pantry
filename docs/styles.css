@@ -43,3 +43,12 @@ input[type=number] { font: inherit; padding: 6px 8px; border: 1px solid var(--li
 @media (max-width: 800px) { .page { grid-template-columns: 1fr; } .profile { position: static; } }
 .checks.two { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; }
 .warning { background: #fee2e2; color: #7f1d1d; border: 1px solid #fecaca; border-radius: 10px; padding: 8px 12px; font-weight: 600; }
+.sort { display: inline-flex; gap: 8px; align-items: center; margin-bottom: 12px; font-size: .9rem; }
+.sort select { font: inherit; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.fit { display: flex; flex-direction: column; gap: 4px; }
+.fit-score { font-weight: 700; font-size: .85rem; }
+.fit-score.great { color: #15803d; } .fit-score.good { color: #a16207; } .fit-score.low { color: #9a3412; }
+.fit-bar { height: 6px; border-radius: 99px; background: #f1ede1; overflow: hidden; }
+.fit-bar span { display: block; height: 100%; border-radius: 99px; }
+.fit-bar .great { background: #22c55e; } .fit-bar .good { background: #eab308; } .fit-bar .low { background: #f97316; }
+.fit-reason { font-size: .78rem; color: var(--muted); }
