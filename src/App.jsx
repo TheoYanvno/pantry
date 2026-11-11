@@ -6,7 +6,7 @@ import ProfileForm from './components/ProfileForm.jsx';
 import { fitScore, fitReason, rankRecipes } from './lib/rank.js';
 import WeekPlan from './components/WeekPlan.jsx';
 import ShoppingList from './components/ShoppingList.jsx';
-import { loadPlan, savePlan, cleanPlan } from './lib/plan.js';
+import { loadPlan, savePlan, cleanPlan, setMeal } from './lib/plan.js';
 import { loadProfile, saveProfile, cleanProfile, visibleRecipes } from './lib/profile.js';
 
 export default function App() {
@@ -35,7 +35,8 @@ export default function App() {
         </nav>
       </header>
       <main>
-        {open ? <RecipeDetail recipe={open} allergies={clean.allergies} onBack={() => setOpenId(null)} />
+        {open ? <RecipeDetail key={open.id} recipe={open} allergies={clean.allergies} plan={cleanPlan(plan)}
+            onAddToPlan={(d, m, id) => setPlan(p => setMeal(cleanPlan(p), d, m, id))} onBack={() => setOpenId(null)} />
           : tab === 'shop' ? <ShoppingList plan={cleanPlan(plan)} />
           : tab === 'week' ? <div className="page"><ProfileForm profile={profile} onChange={setProfile} /><WeekPlan plan={cleanPlan(plan)} profile={clean} onChange={setPlan} onOpen={setOpenId} /></div> : (
           <div className="page">

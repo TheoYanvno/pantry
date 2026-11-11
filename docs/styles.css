@@ -83,3 +83,6 @@ button.link { background: none; border: 0; padding: 2px 0; color: var(--accent);
   body { background: #fff; } main { padding: 0; }
   .aisle { border: 0; padding: 0; } .aisles { columns: 2; }
 }
+.add-plan { margin: 12px 0 4px; }
+.add-plan label { display: inline-flex; gap: 6px; align-items: center; font-size: .9rem; }
+.add-plan select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }

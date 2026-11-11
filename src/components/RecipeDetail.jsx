@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { scaleRecipe, formatIngredient } from '../lib/servings.js';
+import { DAYS } from '../lib/plan.js';
 
 // A recipe in full: nutrition per serving, ingredients and steps.
-export default function RecipeDetail({ recipe, onBack, allergies = [] }) {
+export default function RecipeDetail({ recipe, onBack, allergies = [], plan, onAddToPlan }) {
   const n = recipe.nutrition;
   const clash = recipe.allergens.filter(a => allergies.includes(a));
   const [servings, setServings] = useState(recipe.servings);
   const scaled = scaleRecipe(recipe, servings);
+  const firstFree = plan ? Math.max(0, plan.days.findIndex(d => !d[recipe.meal])) : 0;
+  const [day, setDay] = useState(firstFree);
+  const [added, setAdded] = useState('');
+  const planned = plan ? DAYS.filter((_, i) => plan.days[i][recipe.meal] === recipe.id) : [];
   return (
     <article className="detail" aria-labelledby="recipe-title">
       <button onClick={onBack}>← All recipes</button>
@@ -18,6 +23,17 @@ export default function RecipeDetail({ recipe, onBack, allergies = [] }) {
           ? recipe.allergens.map(a => <span key={a} className="chip allergen">contains {a}</span>)
           : <span className="chip">none of the 9 major allergens</span>}
       </div>
+      {onAddToPlan && (
+        <div className="row add-plan">
+          <label>Add to
+            <select value={day} onChange={e => { setDay(Number(e.target.value)); setAdded(''); }}>
+              {DAYS.map((d, i) => <option key={d} value={i}>{d}{plan.days[i][recipe.meal] ? ' (replaces a meal)' : ''}</option>)}
+            </select>
+          </label>
+          <button className="primary" onClick={() => { onAddToPlan(day, recipe.meal, recipe.id); setAdded(`Added to ${DAYS[day]} ${recipe.meal}.`); }}>Add to week plan</button>
+          <span className="muted small" role="status">{added || (planned.length ? `Planned for ${planned.join(', ')}.` : '')}</span>
+        </div>
+      )}
       {clash.length > 0 && <p className="warning" role="alert">This recipe contains {clash.join(' and ')}, which you listed as an allergy.</p>}
       <div className="nutrition" aria-label="Nutrition per serving">
         <div><strong>{n.calories}</strong>calories</div>
