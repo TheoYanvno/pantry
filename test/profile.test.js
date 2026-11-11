@@ -48,3 +48,13 @@ test('allergies hide every recipe that contains them', async () => {
   assert.equal(shown.length + hiddenForAllergies, RECIPES.length);
   assert.ok(hiddenForAllergies > 0);
 });
+
+test('search matches names and ingredients, and the time limit filters', async () => {
+  const { matchesSearch } = await import('../src/lib/profile.js');
+  const soup = findRecipe('lentil-soup');
+  assert.equal(matchesSearch(soup, 'soup'), true);
+  assert.equal(matchesSearch(soup, 'cumin lentils'), true);
+  assert.equal(matchesSearch(soup, 'cumin chicken'), false);
+  assert.equal(matchesSearch(soup, '', 30), false);           // takes 40 minutes
+  assert.equal(matchesSearch(findRecipe('edamame'), '', 15), true);
+});

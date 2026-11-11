@@ -86,3 +86,7 @@ button.link { background: none; border: 0; padding: 2px 0; color: var(--accent);
 .add-plan { margin: 12px 0 4px; }
 .add-plan label { display: inline-flex; gap: 6px; align-items: center; font-size: .9rem; }
 .add-plan select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.search { margin-bottom: 8px; align-items: flex-end; }
+.search label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; }
+.search input, .search select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); min-width: 240px; }
+.search select { min-width: 0; }

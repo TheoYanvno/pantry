@@ -64,3 +64,12 @@ export function visibleRecipes(recipes, profile, meal = 'all') {
   const shown = pool.filter(r => isSafe(r, profile.allergies));
   return { shown, hiddenForAllergies: pool.length - shown.length };
 }
+
+// Search by recipe name or ingredient (all words must match), and an optional time limit in minutes.
+export function matchesSearch(recipe, words = '', maxMinutes = 0) {
+  if (maxMinutes && recipe.minutes > maxMinutes) return false;
+  const terms = words.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!terms.length) return true;
+  const text = [recipe.name, ...recipe.ingredients.map(i => i.item), recipe.meal, ...recipe.diets].join(' ').toLowerCase();
+  return terms.every(t => text.includes(t));
+}
