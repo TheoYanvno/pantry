@@ -4,12 +4,17 @@ import RecipeCard from './components/RecipeCard.jsx';
 import RecipeDetail from './components/RecipeDetail.jsx';
 import ProfileForm from './components/ProfileForm.jsx';
 import { fitScore, fitReason, rankRecipes } from './lib/rank.js';
+import WeekPlan from './components/WeekPlan.jsx';
+import { loadPlan, savePlan, cleanPlan } from './lib/plan.js';
 import { loadProfile, saveProfile, cleanProfile, visibleRecipes } from './lib/profile.js';
 
 export default function App() {
   const [meal, setMeal] = useState('all');
   const [openId, setOpenId] = useState(null);
   const [sort, setSort] = useState('fit');
+  const [tab, setTab] = useState('recipes');
+  const [plan, setPlan] = useState(loadPlan);
+  useEffect(() => { savePlan(cleanPlan(plan)); }, [plan]);
   const [profile, setProfile] = useState(loadProfile);
   useEffect(() => { saveProfile(cleanProfile(profile)); }, [profile]);
   const open = openId ? findRecipe(openId) : null;
@@ -22,9 +27,15 @@ export default function App() {
       <header>
         <img src="icon.svg" alt="" width="40" height="40" />
         <div><h1>Pantry</h1><p>Meals that fit your goal, your needs and your allergies</p></div>
+        <nav aria-label="Pages">
+          {[['recipes', 'Recipes'], ['week', 'Week plan']].map(([id, label]) => (
+            <button key={id} aria-current={tab === id && !openId ? 'page' : undefined} onClick={() => { setTab(id); setOpenId(null); }}>{label}</button>
+          ))}
+        </nav>
       </header>
       <main>
-        {open ? <RecipeDetail recipe={open} allergies={cleanProfile(profile).allergies} onBack={() => setOpenId(null)} /> : (
+        {open ? <RecipeDetail recipe={open} allergies={clean.allergies} onBack={() => setOpenId(null)} />
+          : tab === 'week' ? <div className="page"><ProfileForm profile={profile} onChange={setProfile} /><WeekPlan plan={cleanPlan(plan)} profile={clean} onChange={setPlan} onOpen={setOpenId} /></div> : (
           <div className="page">
           <ProfileForm profile={profile} onChange={setProfile} />
           <section aria-labelledby="recipes-title">
