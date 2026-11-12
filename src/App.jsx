@@ -4,6 +4,7 @@ import RecipeCard from './components/RecipeCard.jsx';
 import RecipeDetail from './components/RecipeDetail.jsx';
 import ProfileForm from './components/ProfileForm.jsx';
 import { fitScore, fitReason, rankRecipes } from './lib/rank.js';
+import { recipeCost } from './lib/prices.js';
 import WeekPlan from './components/WeekPlan.jsx';
 import ShoppingList from './components/ShoppingList.jsx';
 import { loadPlan, savePlan, cleanPlan, setMeal } from './lib/plan.js';
@@ -25,7 +26,9 @@ export default function App() {
   const visible = visibleRecipes(RECIPES, clean, meal);
   const hiddenForAllergies = visible.hiddenForAllergies;
   const shown = visible.shown.filter(r => matchesSearch(r, words, quick));
-  const list = sort === 'fit' ? rankRecipes(shown, clean).map(x => x.recipe) : [...shown].sort((a, b) => a.name.localeCompare(b.name));
+  const list = sort === 'fit' ? rankRecipes(shown, clean).map(x => x.recipe)
+    : sort === 'cost' ? [...shown].sort((a, b) => recipeCost(a).perServing - recipeCost(b).perServing)
+    : [...shown].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <>
@@ -52,7 +55,7 @@ export default function App() {
                 <button key={m} aria-pressed={meal === m} onClick={() => setMeal(m)}>{m === 'all' ? 'All meals' : m[0].toUpperCase() + m.slice(1)}</button>
               ))}
             </div>
-            <p className="muted small" role="status">{shown.length} recipe{shown.length === 1 ? '' : 's'}{profile.diets.length ? ` that are ${profile.diets.join(' and ')}` : ''}{hiddenForAllergies ? ` · ${hiddenForAllergies} hidden for your allergies` : ''}</p>
+            <p className="muted small" role="status">{shown.length} recipe{shown.length === 1 ? '' : 's'}{profile.diets.length ? ` that are ${profile.diets.join(' and ')}` : ''}{clean.budget ? ` at up to $${clean.budget} a serving` : ''}{hiddenForAllergies ? ` · ${hiddenForAllergies} hidden for your allergies` : ''}</p>
             <div className="row search">
               <label>Search<input type="search" value={words} onChange={e => setWords(e.target.value)} placeholder="name or ingredient, like salmon or oats" /></label>
               <label>Time
@@ -64,10 +67,11 @@ export default function App() {
             <label className="sort">Sort by
               <select value={sort} onChange={e => setSort(e.target.value)}>
                 <option value="fit">Best fit for your targets</option>
+                <option value="cost">Lowest cost per serving</option>
                 <option value="name">Name</option>
               </select>
             </label>
-            {list.length === 0 && <p className="muted">No recipes match. Try other words, a longer time, or fewer diet choices.</p>}
+            {list.length === 0 && <p className="muted">No recipes match. Try other words, a longer time, a bigger budget or fewer diet choices.</p>}
             <div className="grid">{list.map(r => (
               <RecipeCard key={r.id} recipe={r} onOpen={setOpenId}>
                 <Fit score={fitScore(r, clean)} reason={fitReason(r, clean)} />

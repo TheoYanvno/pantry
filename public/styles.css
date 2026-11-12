@@ -101,3 +101,6 @@ button.link { background: none; border: 0; padding: 2px 0; color: var(--accent);
   .profile-summary { display: block; margin: 6px 0 0; }
 }
 @media (min-width: 801px) { .profile-body[hidden] { display: block; } }
+.budget { display: grid; gap: 4px; margin: 8px 0; font-weight: 600; }
+.cost { margin: 12px 0 4px; }
+.budget select { font: inherit; font-weight: 400; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }

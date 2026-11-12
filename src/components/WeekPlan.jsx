@@ -1,6 +1,7 @@
 import { MEALS, RECIPES, findRecipe } from '../lib/recipes.js';
 import { DAYS, setMeal, suggestWeek, dayTotals, conflicts, emptyPlan } from '../lib/plan.js';
 import { visibleRecipes } from '../lib/profile.js';
+import { planCost, money } from '../lib/prices.js';
 
 const cap = s => s[0].toUpperCase() + s.slice(1);
 
@@ -59,6 +60,7 @@ export default function WeekPlan({ plan, profile, onChange, onOpen }) {
           );
         })}
       </div>
+      {planCost(plan) > 0 && <p className="cost"><strong>About {money(planCost(plan))}</strong> for the week's food for {plan.people} {plan.people === 1 ? 'person' : 'people'} ({money(planCost(plan) / 7 / plan.people)} a day each), at typical Walmart and Aldi store-brand prices.</p>}
       <p className="muted small">Totals are for one person eating one serving of each planned meal.</p>
     </section>
   );

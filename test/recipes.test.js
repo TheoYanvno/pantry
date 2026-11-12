@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { RECIPES, ALLERGENS, DIETS, MEALS, LOW_SODIUM_MG, findRecipe } from '../src/lib/recipes.js';
+import { CATALOG, STORES, contents } from '../src/lib/catalog.js';
+import { itemName, AISLES } from '../src/lib/shopping.js';
 
 test('every recipe is complete and uses known meals, allergens and diets', () => {
   const ids = new Set();
@@ -43,4 +45,18 @@ test('diet tags agree with the allergens and sodium', () => {
 test('findRecipe looks recipes up by id', () => {
   assert.equal(findRecipe('lentil-soup').name, 'Lentil Soup');
   assert.equal(findRecipe('nope'), null);
+});
+
+test('every ingredient is an everyday item from the Walmart and Aldi catalog', () => {
+  for (const r of RECIPES) for (const ing of r.ingredients) {
+    const name = itemName(ing.item);
+    assert.ok(CATALOG[name], `${r.id}: ${name} is not in the catalog`);
+    assert.ok(AISLES.includes(CATALOG[name].aisle), name);
+  }
+  assert.deepEqual(STORES, ['Walmart', 'Aldi']);
+});
+
+test('a recipe knows what it is made of, for diet rules', () => {
+  assert.deepEqual([...contents(findRecipe('shrimp-primavera'), itemName)].sort(), ['dairy', 'oil', 'shellfish']);
+  assert.deepEqual([...contents(findRecipe('lentil-soup'), itemName)], []);
 });

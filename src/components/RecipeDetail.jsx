@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { scaleRecipe, formatIngredient } from '../lib/servings.js';
 import { DAYS } from '../lib/plan.js';
+import { recipeCost, money } from '../lib/prices.js';
 
 // A recipe in full: nutrition per serving, ingredients and steps.
 export default function RecipeDetail({ recipe, onBack, allergies = [], plan, onAddToPlan }) {
@@ -52,6 +53,8 @@ export default function RecipeDetail({ recipe, onBack, allergies = [], plan, onA
           </div>
           <ul>{scaled.ingredients.map((x, k) => <li key={k}>{formatIngredient(x)}</li>)}</ul>
           <p className="muted small">About {n.calories * scaled.servings} calories and {n.protein * scaled.servings} g protein in all.</p>
+          <p className="muted small">About {money(recipeCost(recipe).perServing * scaled.servings)} for {scaled.servings} serving{scaled.servings === 1 ? '' : 's'} ({money(recipeCost(recipe).perServing)} each) at typical store-brand prices.</p>
+          <p className="muted small">Every ingredient is an everyday item at Walmart and Aldi; store brands work fine.</p>
         </section>
         <section>
           <h3>Steps</h3>

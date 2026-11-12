@@ -2,20 +2,10 @@
 // item and unit, and grouped by store aisle.
 import { MEALS, findRecipe } from './recipes.js';
 import { formatQty, formatUnit } from './servings.js';
+import { CATALOG } from './catalog.js';
 
 export const AISLES = ['Produce', 'Meat & seafood', 'Dairy & eggs', 'Refrigerated', 'Frozen', 'Bread & grains', 'Canned & dry goods', 'Spices, oils & sauces', 'Other'];
 
-const AISLE_WORDS = [
-  ['Produce', /green beans/],
-  ['Meat & seafood', /chicken|steak|beef|turkey|salmon|shrimp|tuna/],
-  ['Dairy & eggs', /milk|yogurt|cheddar|parmesan|cheese|\beggs?\b/],
-  ['Refrigerated', /tofu|hummus|salsa/],
-  ['Frozen', /edamame/],
-  ['Bread & grains', /bread|tortilla|oats|rice|quinoa|pasta|granola/],
-  ['Spices, oils & sauces', /cinnamon|cumin|paprika|turmeric|salt|oil|soy sauce/],
-  ['Canned & dry goods', /beans|chickpeas|lentils|broth|peanut butter|almond butter|tahini|honey|chia|almonds/],
-  ['Produce', /spinach|pepper|banana|apple|avocado|berries|broccoli|carrot|celery|tomato|cucumber|garlic|ginger|green beans|lemon|lettuce|lime|onion|potato|zucchini/],
-];
 
 // Same food written two ways in different recipes.
 const ALIASES = { 'celery stalk': 'celery stalks', 'mixed berries': 'berries', 'lettuce leaves': 'lettuce leaves' };
@@ -25,9 +15,9 @@ export function itemName(item) {
   return ALIASES[base] || base;
 }
 
+// Each item's aisle comes from the catalog of everyday Walmart and Aldi items.
 export function aisleFor(name) {
-  for (const [aisle, re] of AISLE_WORDS) if (re.test(name.toLowerCase())) return aisle;
-  return 'Other';
+  return CATALOG[name]?.aisle ?? 'Other';
 }
 
 // [{ aisle, items: [{ name, amounts: [{ qty, unit }], recipes: [names] }] }] in aisle order.

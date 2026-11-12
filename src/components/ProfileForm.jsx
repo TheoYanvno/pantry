@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { GOALS, LIMITS, withGoal, profileSummary } from '../lib/profile.js';
+import { BUDGETS } from '../lib/prices.js';
 import { DIETS, ALLERGENS } from '../lib/recipes.js';
 
 // The profile form: goal, daily targets and diets. Changes save as you go. On small screens it starts
@@ -40,6 +41,11 @@ export default function ProfileForm({ profile, onChange }) {
         </label>
       </div>
       <p className="muted small">Goals fill in example targets. Change them to the numbers you and your doctor or dietitian chose.</p>
+      <label className="budget">Budget per serving
+        <select value={profile.budget || 0} onChange={e => onChange({ ...profile, budget: Number(e.target.value) })}>
+          {BUDGETS.map(b => <option key={b} value={b}>{b ? `Up to $${b}` : 'Any price'}</option>)}
+        </select>
+      </label>
       <fieldset>
         <legend>Diet</legend>
         <div className="checks">

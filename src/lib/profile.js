@@ -2,6 +2,7 @@
 // browser. Starting targets are general examples only; people should set their own, ideally with a
 // doctor or dietitian.
 import { DIETS, ALLERGENS } from './recipes.js';
+import { BUDGETS, fitsBudget } from './prices.js';
 
 const KEY = 'pantry:profile';
 
@@ -14,7 +15,7 @@ export const GOALS = {
 export const LIMITS = { calories: [1200, 4500], protein: [40, 300] };
 
 export function defaultProfile() {
-  return { goal: 'maintain', calories: GOALS.maintain.calories, protein: GOALS.maintain.protein, diets: [], allergies: [] };
+  return { goal: 'maintain', calories: GOALS.maintain.calories, protein: GOALS.maintain.protein, diets: [], allergies: [], budget: 0 };
 }
 
 function clamp(n, [lo, hi], fallback) {
@@ -32,6 +33,7 @@ export function cleanProfile(raw) {
     protein: clamp(raw.protein, LIMITS.protein, d.protein),
     diets: Array.isArray(raw.diets) ? DIETS.filter(x => raw.diets.includes(x)) : [],
     allergies: Array.isArray(raw.allergies) ? ALLERGENS.filter(x => raw.allergies.includes(x)) : [],
+    budget: BUDGETS.includes(Number(raw.budget)) ? Number(raw.budget) : 0,
   };
 }
 
@@ -60,7 +62,7 @@ export function isSafe(recipe, allergies) {
 
 // The recipes to show, plus how many were hidden for allergies (so the page can say so).
 export function visibleRecipes(recipes, profile, meal = 'all') {
-  const pool = recipes.filter(r => (meal === 'all' || r.meal === meal) && fitsDiets(r, profile.diets));
+  const pool = recipes.filter(r => (meal === 'all' || r.meal === meal) && fitsDiets(r, profile.diets) && fitsBudget(r, profile.budget));
   const shown = pool.filter(r => isSafe(r, profile.allergies));
   return { shown, hiddenForAllergies: pool.length - shown.length };
 }
@@ -79,6 +81,7 @@ export function profileSummary(profile) {
   const p = cleanProfile(profile);
   const parts = [GOALS[p.goal]?.label || 'Custom', `${p.calories.toLocaleString('en-US')} cal`, `${p.protein} g protein`];
   if (p.diets.length) parts.push(p.diets.join(', '));
+  if (p.budget) parts.push(`up to $${p.budget} a serving`);
   if (p.allergies.length) {
     const a = p.allergies;
     parts.push(`no ${a.length === 1 ? a[0] : `${a.slice(0, -1).join(', ')} or ${a[a.length - 1]}`}`);

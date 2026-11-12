@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { shoppingList, listAsText, itemLine } from '../lib/shopping.js';
+import { CATALOG } from '../lib/catalog.js';
+import { planCost, money } from '../lib/prices.js';
 
 // The week's shopping list by aisle, with boxes to tick off in the store, a copy button and a
 // print-friendly layout.
@@ -33,6 +35,7 @@ export default function ShoppingList({ plan }) {
           {got.size > 0 && <button onClick={() => setGot(new Set())}>Untick all</button>}
         </div>
       </div>
+      <p className="muted small">Everything on this list is an everyday item at Walmart and at Aldi, so one trip to either store covers the week. The food you'll use comes to <strong>about {money(planCost(plan))}</strong> at typical store-brand prices; the receipt runs higher the first week because you buy whole packages, and lower after, as staples like oil and spices carry over.</p>
       <p className="muted small no-print" role="status">{copied}</p>
       <div className="aisles">
         {groups.map(g => (
@@ -45,7 +48,7 @@ export default function ShoppingList({ plan }) {
                     <input type="checkbox" checked={got.has(it.name)} onChange={() => toggle(it.name)} />
                     <span>{itemLine(it)}</span>
                   </label>
-                  <span className="for muted">for {it.recipes.join(', ')}</span>
+                  <span className="for muted">for {it.recipes.join(', ')}{CATALOG[it.name]?.note ? ` · ${CATALOG[it.name].note}` : ''}</span>
                 </li>
               ))}
             </ul>

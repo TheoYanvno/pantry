@@ -1,4 +1,4 @@
-// Pantry's recipes. Nutrition is per serving and is an estimate worked out from typical values for
+// Pantry's recipes, made only from everyday ingredients Walmart and Aldi both carry (see catalog.js). Nutrition is per serving and is an estimate worked out from typical values for
 // each ingredient; it is a planning guide, not a lab measurement. Allergens use the nine major food
 // allergens named by the FDA; check the labels on what you buy, since brands differ.
 
@@ -50,8 +50,8 @@ export const RECIPES = [
     id: 'chickpea-wrap', name: 'Chickpea Salad Wrap', meal: 'lunch', servings: 2, minutes: 10,
     nutrition: { calories: 450, protein: 17, carbs: 62, fat: 15, sodium: 690 },
     allergens: ['sesame', 'wheat'], diets: ['vegetarian', 'vegan'],
-    ingredients: [i(15, 'oz', 'can chickpeas, rinsed'), i(2, 'tbsp', 'tahini'), i(1, '', 'celery stalk, diced'), i(1, '', 'lemon'), i(2, '', 'large flour tortillas'), i(1, 'cup', 'lettuce')],
-    steps: ['Mash the chickpeas with the tahini, lemon juice and celery.', 'Spread over the tortillas, add lettuce and roll up.'],
+    ingredients: [i(15, 'oz', 'can chickpeas, rinsed'), i(0.25, 'cup', 'hummus'), i(1, '', 'celery stalk, diced'), i(1, '', 'lemon'), i(2, '', 'large flour tortillas'), i(1, 'cup', 'lettuce')],
+    steps: ['Mash the chickpeas with the hummus, lemon juice and celery.', 'Spread over the tortillas, add lettuce and roll up.'],
   },
   {
     id: 'turkey-avocado', name: 'Turkey Avocado Sandwich', meal: 'lunch', servings: 1, minutes: 5,
@@ -85,7 +85,7 @@ export const RECIPES = [
     id: 'beef-broccoli', name: 'Beef and Broccoli Stir-Fry', meal: 'dinner', servings: 3, minutes: 25,
     nutrition: { calories: 520, protein: 38, carbs: 52, fat: 16, sodium: 980 },
     allergens: ['soy', 'wheat'], diets: [],
-    ingredients: [i(1, 'lb', 'flank steak, thinly sliced'), i(4, 'cup', 'broccoli florets'), i(3, 'tbsp', 'soy sauce'), i(2, '', 'garlic cloves'), i(1, 'tbsp', 'fresh ginger, grated'), i(1, 'cup', 'dry white rice')],
+    ingredients: [i(1, 'lb', 'sirloin steak, thinly sliced'), i(4, 'cup', 'broccoli florets'), i(3, 'tbsp', 'soy sauce'), i(2, '', 'garlic cloves'), i(0.5, 'tsp', 'ground ginger'), i(1, 'cup', 'dry white rice')],
     steps: ['Cook the rice.', 'Sear the steak in a hot pan in batches and set aside.', 'Stir-fry the broccoli, garlic and ginger, return the beef, add the soy sauce and toss.'],
   },
   {
@@ -134,7 +134,7 @@ export const RECIPES = [
     id: 'edamame', name: 'Salted Edamame', meal: 'snack', servings: 2, minutes: 5,
     nutrition: { calories: 190, protein: 17, carbs: 14, fat: 8, sodium: 160 },
     allergens: ['soy'], diets: ['vegetarian', 'vegan', 'gluten-free', 'low sodium'],
-    ingredients: [i(2, 'cup', 'shelled edamame'), i(0.25, 'tsp', 'flaky salt')],
+    ingredients: [i(2, 'cup', 'shelled edamame'), i(0.25, 'tsp', 'sea salt')],
     steps: ['Steam or microwave the edamame for 3 to 4 minutes.', 'Sprinkle with the salt.'],
   },
 ];
