@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { shoppingList, listAsText, itemLine } from '../lib/shopping.js';
 import { CATALOG } from '../lib/catalog.js';
 import { planCost, money } from '../lib/prices.js';
+import StoreFinder from './StoreFinder.jsx';
 
 // The week's shopping list by aisle, with boxes to tick off in the store, a copy button and a
 // print-friendly layout.
@@ -24,7 +25,7 @@ export default function ShoppingList({ plan }) {
     setGot(s => { const n = new Set(s); n.has(name) ? n.delete(name) : n.add(name); return n; });
   }
 
-  if (!count) return <section className="shopping"><h2>Shopping list</h2><p className="muted">Plan some meals in the Week plan and the list appears here.</p></section>;
+  if (!count) return <section className="shopping"><h2>Shopping list</h2><p className="muted">Plan some meals in the Week plan and the list appears here.</p><StoreFinder /></section>;
   return (
     <section className="shopping" aria-labelledby="shop-title">
       <div className="row spread">
@@ -37,6 +38,7 @@ export default function ShoppingList({ plan }) {
       </div>
       <p className="muted small">Everything on this list is an everyday item at Walmart and at Aldi, so one trip to either store covers the week. The food you'll use comes to <strong>about {money(planCost(plan))}</strong> at typical store-brand prices; the receipt runs higher the first week because you buy whole packages, and lower after, as staples like oil and spices carry over.</p>
       <p className="muted small no-print" role="status">{copied}</p>
+      <StoreFinder />
       <div className="aisles">
         {groups.map(g => (
           <section key={g.aisle} className="aisle" aria-label={g.aisle}>

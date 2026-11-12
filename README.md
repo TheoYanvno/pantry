@@ -1,10 +1,10 @@
 # 🥘 Pantry
 
-A React meal planner that chooses recipes for you. Tell it your goal, your nutrition needs and any allergies, and it plans meals that fit.
+A React meal planner that chooses recipes for you. Tell it your goal, your nutrition needs, your budget, any allergies and any faith-based diet, and it plans meals that fit, from everyday ingredients you can buy at Walmart or Aldi.
 
 **Try it:** https://theoyanvno.github.io/pantry/
 
-![Recipes ranked by how well they fit the profile's daily targets, with a fit score, the reason and diet and allergen tags on each card](docs/screenshots/recipes.png)
+![Recipes ranked by how well they fit the profile's daily targets, with Try something new suggestions, a cost per serving, a fit score, the reason, diet and allergen tags and a favorite star on each card](docs/screenshots/recipes.png)
 
 ## Features
 
@@ -20,11 +20,12 @@ A React meal planner that chooses recipes for you. Tell it your goal, your nutri
 - **Week plan:** pick a recipe for each meal of each day, or fill the empty meals with the best fits for your profile in one click. Each day shows its calories and protein against your targets. Add any recipe to the plan from its page.
 - **Shopping list:** every ingredient in the week, scaled to the number of people, added up by item and grouped by store aisle, with tick boxes, copy as text and a print layout.
 - **Works on phones:** on a small screen the profile folds to one line ("Maintain · 2,200 cal · 110 g protein · no peanuts") with an Edit button, so the recipes come first.
-- **Saved in the browser:** your profile and week plan stay put between visits. Nothing to sign up for.
+- **Nearest Walmart or Aldi:** on the shopping list, tap Use my location (or type a ZIP code) to open the closest stores on a map, pick your store, or jump to each chain's store finder. Your location is only used when you tap, only goes to the map you open, and is never saved.
+- **Saved in the browser:** your profile, favorites, store and week plan stay put between visits. Nothing to sign up for.
 
 | Week plan | Recipe | Shopping list |
 | --- | --- | --- |
-| ![A week plan with a recipe picked for every meal and each day's calories and protein against the targets](docs/screenshots/week-plan.png) | ![A recipe page with nutrition per serving, servings that scale the ingredients and the steps](docs/screenshots/recipe.png) | ![The shopping list for the week grouped by aisle, with what each item is for](docs/screenshots/shopping-list.png) |
+| ![A week plan with a recipe picked for every meal and each day's calories and protein against the targets](docs/screenshots/week-plan.png) | ![A recipe page with nutrition per serving, servings that scale the ingredients and the steps](docs/screenshots/recipe.png) | ![The shopping list for the week with its estimated cost, the nearest-store finder and items grouped by aisle](docs/screenshots/shopping-list.png) |
 
 ## Run it
 
