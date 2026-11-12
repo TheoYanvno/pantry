@@ -15,6 +15,7 @@ A React meal planner that chooses recipes for you. Tell it your goal, your nutri
 - **Recipes that scale:** change the servings and every amount updates, with fractions kept readable (1 ½ cups, not 1.5), plus calories, protein, carbs, fat and sodium per serving.
 - **Week plan:** pick a recipe for each meal of each day, or fill the empty meals with the best fits for your profile in one click. Each day shows its calories and protein against your targets. Add any recipe to the plan from its page.
 - **Shopping list:** every ingredient in the week, scaled to the number of people, added up by item and grouped by store aisle, with tick boxes, copy as text and a print layout.
+- **Works on phones:** on a small screen the profile folds to one line ("Maintain · 2,200 cal · 110 g protein · no peanuts") with an Edit button, so the recipes come first.
 - **Saved in the browser:** your profile and week plan stay put between visits. Nothing to sign up for.
 
 | Week plan | Recipe | Shopping list |

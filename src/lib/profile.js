@@ -73,3 +73,15 @@ export function matchesSearch(recipe, words = '', maxMinutes = 0) {
   const text = [recipe.name, ...recipe.ingredients.map(i => i.item), recipe.meal, ...recipe.diets].join(' ').toLowerCase();
   return terms.every(t => text.includes(t));
 }
+
+// One line for the folded profile on small screens: "Maintain · 2,200 cal · 110 g protein · no milk or eggs".
+export function profileSummary(profile) {
+  const p = cleanProfile(profile);
+  const parts = [GOALS[p.goal]?.label || 'Custom', `${p.calories.toLocaleString('en-US')} cal`, `${p.protein} g protein`];
+  if (p.diets.length) parts.push(p.diets.join(', '));
+  if (p.allergies.length) {
+    const a = p.allergies;
+    parts.push(`no ${a.length === 1 ? a[0] : `${a.slice(0, -1).join(', ')} or ${a[a.length - 1]}`}`);
+  }
+  return parts.join(' · ');
+}

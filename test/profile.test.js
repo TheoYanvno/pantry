@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { cleanProfile, defaultProfile, withGoal, loadProfile, saveProfile, fitsDiets, GOALS } from '../src/lib/profile.js';
+import { cleanProfile, defaultProfile, withGoal, loadProfile, saveProfile, fitsDiets, GOALS, profileSummary } from '../src/lib/profile.js';
 import { findRecipe } from '../src/lib/recipes.js';
 
 function memory(initial) {
@@ -57,4 +57,11 @@ test('search matches names and ingredients, and the time limit filters', async (
   assert.equal(matchesSearch(soup, 'cumin chicken'), false);
   assert.equal(matchesSearch(soup, '', 30), false);           // takes 40 minutes
   assert.equal(matchesSearch(findRecipe('edamame'), '', 15), true);
+});
+
+test('the folded profile sums itself up in one line', () => {
+  assert.equal(profileSummary(defaultProfile()), 'Maintain · 2,200 cal · 110 g protein');
+  const p = { ...withGoal(defaultProfile(), 'lose'), diets: ['vegetarian'], allergies: ['milk', 'eggs', 'peanuts'] };
+  assert.equal(profileSummary(p), 'Lose weight · 1,800 cal · 120 g protein · vegetarian · no milk, eggs or peanuts');
+  assert.equal(profileSummary({ ...defaultProfile(), allergies: ['soy'] }), 'Maintain · 2,200 cal · 110 g protein · no soy');
 });

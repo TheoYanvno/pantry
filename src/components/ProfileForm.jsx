@@ -1,15 +1,26 @@
-import { GOALS, LIMITS, withGoal } from '../lib/profile.js';
+import { useState } from 'react';
+import { GOALS, LIMITS, withGoal, profileSummary } from '../lib/profile.js';
 import { DIETS, ALLERGENS } from '../lib/recipes.js';
 
-// The profile form: goal, daily targets and diets. Changes save as you go.
+// The profile form: goal, daily targets and diets. Changes save as you go. On small screens it starts
+// folded to one summary line, so the recipes are on the first screen.
+const small = () => Boolean(globalThis.matchMedia?.('(max-width: 800px)').matches);
+
 export default function ProfileForm({ profile, onChange }) {
+  const [open, setOpen] = useState(() => !small());
   function toggle(key, value) {
     const list = profile[key];
     onChange({ ...profile, [key]: list.includes(value) ? list.filter(x => x !== value) : [...list, value] });
   }
   return (
     <section className="profile" aria-labelledby="profile-title">
-      <h2 id="profile-title">Your profile</h2>
+      <div className="profile-head">
+        <h2 id="profile-title">Your profile</h2>
+        <button type="button" className="profile-toggle" aria-expanded={open} aria-controls="profile-body"
+          onClick={() => setOpen(o => !o)}>{open ? 'Done' : 'Edit'}</button>
+      </div>
+      <p className="profile-summary muted small">{profileSummary(profile)}</p>
+      <div id="profile-body" className="profile-body" hidden={!open}>
       <fieldset>
         <legend>Goal</legend>
         <div className="tabs">
@@ -46,6 +57,7 @@ export default function ProfileForm({ profile, onChange }) {
           ))}
         </div>
       </fieldset>
+      </div>
     </section>
   );
 }

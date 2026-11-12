@@ -90,3 +90,14 @@ button.link { background: none; border: 0; padding: 2px 0; color: var(--accent);
 .search label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; }
 .search input, .search select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); min-width: 240px; }
 .search select { min-width: 0; }
+
+/* Profile folds to a summary line on small screens; on wide screens it is always open. */
+.profile-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.profile-head h2 { margin: 0; }
+.profile-toggle, .profile-summary { display: none; }
+.profile-body { margin-top: 12px; }
+@media (max-width: 800px) {
+  .profile-toggle { display: inline-block; }
+  .profile-summary { display: block; margin: 6px 0 0; }
+}
+@media (min-width: 801px) { .profile-body[hidden] { display: block; } }
