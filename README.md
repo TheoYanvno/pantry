@@ -2,16 +2,33 @@
 
 A React meal planner that chooses recipes for you. Tell it your goal, your nutrition needs and any allergies, and it plans meals that fit.
 
-**Status:** in planning. Code is on the way.
+**Try it:** https://theoyanvno.github.io/pantry/
 
-## Planned features
+![Recipes ranked by how well they fit the profile's daily targets, with a fit score, the reason and diet and allergen tags on each card](docs/screenshots/recipes.png)
 
-- Profiles with a goal (lose, maintain or gain), daily calorie and protein targets, and diet choices such as vegetarian or low sodium
-- Allergies and intolerances that hide every recipe containing them, with allergens shown on each card
-- Recipes ranked by how well they fit your targets for the day
-- Servings that scale, with fractions kept readable (1 ½ cups, not 1.5)
-- A week plan that turns into one combined shopping list
-- Everything saved in the browser; nothing to sign up for
+## Features
+
+- **Your profile:** a goal (lose weight, maintain or gain muscle) that fills in example calorie and protein targets you can change, diet choices (vegetarian, vegan, gluten-free, low sodium) and nine allergies and intolerances.
+- **Allergies hide recipes:** any recipe with milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soy or sesame you've marked is hidden, the page says how many were hidden, and allergens show in red on every recipe.
+- **Best fit first:** 18 recipes for breakfast, lunch, dinner and snacks, ranked by how close each comes to your calorie and protein targets for that meal, with a percent and a plain reason ("140 cal under your 660-cal lunch target").
+- **Search and filter:** by name or ingredient (every word must match), by meal and by time (10, 20 or 30 minutes or less).
+- **Recipes that scale:** change the servings and every amount updates, with fractions kept readable (1 ½ cups, not 1.5), plus calories, protein, carbs, fat and sodium per serving.
+- **Week plan:** pick a recipe for each meal of each day, or fill the empty meals with the best fits for your profile in one click. Each day shows its calories and protein against your targets. Add any recipe to the plan from its page.
+- **Shopping list:** every ingredient in the week, scaled to the number of people, added up by item and grouped by store aisle, with tick boxes, copy as text and a print layout.
+- **Saved in the browser:** your profile and week plan stay put between visits. Nothing to sign up for.
+
+| Week plan | Recipe | Shopping list |
+| --- | --- | --- |
+| ![A week plan with a recipe picked for every meal and each day's calories and protein against the targets](docs/screenshots/week-plan.png) | ![A recipe page with nutrition per serving, servings that scale the ingredients and the steps](docs/screenshots/recipe.png) | ![The shopping list for the week grouped by aisle, with what each item is for](docs/screenshots/shopping-list.png) |
+
+## Run it
+
+```bash
+npm install
+npm start      # build and serve at http://localhost:8000
+npm test       # Node's test runner
+npm run build  # build into docs/ for GitHub Pages
+```
 
 ## Built with
 
