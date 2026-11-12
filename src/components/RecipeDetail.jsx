@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { scaleRecipe, formatIngredient } from '../lib/servings.js';
 import { DAYS } from '../lib/plan.js';
 import { recipeCost, money } from '../lib/prices.js';
+import { faithNotes } from '../lib/diets.js';
 
 // A recipe in full: nutrition per serving, ingredients and steps.
-export default function RecipeDetail({ recipe, onBack, allergies = [], plan, onAddToPlan }) {
+export default function RecipeDetail({ recipe, onBack, allergies = [], faiths = [], plan, onAddToPlan, favorite, onFavorite }) {
   const n = recipe.nutrition;
   const clash = recipe.allergens.filter(a => allergies.includes(a));
   const [servings, setServings] = useState(recipe.servings);
@@ -17,7 +18,10 @@ export default function RecipeDetail({ recipe, onBack, allergies = [], plan, onA
     <article className="detail" aria-labelledby="recipe-title">
       <button onClick={onBack}>← All recipes</button>
       <p className="meta"><span className="meal">{recipe.meal}</span> · {recipe.minutes} min · serves {recipe.servings}</p>
-      <h2 id="recipe-title">{recipe.name}</h2>
+      <div className="row spread">
+        <h2 id="recipe-title">{recipe.name}</h2>
+        {onFavorite && <button className={`fav-big ${favorite ? 'on' : ''}`} aria-pressed={!!favorite} onClick={() => onFavorite(recipe.id)}>{favorite ? '★ Saved to favorites' : '☆ Save to favorites'}</button>}
+      </div>
       <div className="chips">
         {recipe.diets.map(d => <span key={d} className="chip">{d}</span>)}
         {recipe.allergens.length
@@ -35,6 +39,7 @@ export default function RecipeDetail({ recipe, onBack, allergies = [], plan, onA
           <span className="muted small" role="status">{added || (planned.length ? `Planned for ${planned.join(', ')}.` : '')}</span>
         </div>
       )}
+      {faithNotes(recipe, faiths).map(t => <p key={t} className="note-faith">{t}</p>)}
       {clash.length > 0 && <p className="warning" role="alert">This recipe contains {clash.join(' and ')}, which you listed as an allergy.</p>}
       <div className="nutrition" aria-label="Nutrition per serving">
         <div><strong>{n.calories}</strong>calories</div>

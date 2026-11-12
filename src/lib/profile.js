@@ -3,6 +3,7 @@
 // doctor or dietitian.
 import { DIETS, ALLERGENS } from './recipes.js';
 import { BUDGETS, fitsBudget } from './prices.js';
+import { FAITHS, fitsFaith, FAITH_DIETS } from './diets.js';
 
 const KEY = 'pantry:profile';
 
@@ -15,7 +16,7 @@ export const GOALS = {
 export const LIMITS = { calories: [1200, 4500], protein: [40, 300] };
 
 export function defaultProfile() {
-  return { goal: 'maintain', calories: GOALS.maintain.calories, protein: GOALS.maintain.protein, diets: [], allergies: [], budget: 0 };
+  return { goal: 'maintain', calories: GOALS.maintain.calories, protein: GOALS.maintain.protein, diets: [], faiths: [], allergies: [], budget: 0 };
 }
 
 function clamp(n, [lo, hi], fallback) {
@@ -32,6 +33,7 @@ export function cleanProfile(raw) {
     calories: clamp(raw.calories, LIMITS.calories, d.calories),
     protein: clamp(raw.protein, LIMITS.protein, d.protein),
     diets: Array.isArray(raw.diets) ? DIETS.filter(x => raw.diets.includes(x)) : [],
+    faiths: Array.isArray(raw.faiths) ? FAITHS.filter(x => raw.faiths.includes(x)) : [],
     allergies: Array.isArray(raw.allergies) ? ALLERGENS.filter(x => raw.allergies.includes(x)) : [],
     budget: BUDGETS.includes(Number(raw.budget)) ? Number(raw.budget) : 0,
   };
@@ -62,7 +64,7 @@ export function isSafe(recipe, allergies) {
 
 // The recipes to show, plus how many were hidden for allergies (so the page can say so).
 export function visibleRecipes(recipes, profile, meal = 'all') {
-  const pool = recipes.filter(r => (meal === 'all' || r.meal === meal) && fitsDiets(r, profile.diets) && fitsBudget(r, profile.budget));
+  const pool = recipes.filter(r => (meal === 'all' || r.meal === meal) && fitsDiets(r, profile.diets) && fitsFaith(r, profile.faiths) && fitsBudget(r, profile.budget));
   const shown = pool.filter(r => isSafe(r, profile.allergies));
   return { shown, hiddenForAllergies: pool.length - shown.length };
 }
@@ -81,6 +83,7 @@ export function profileSummary(profile) {
   const p = cleanProfile(profile);
   const parts = [GOALS[p.goal]?.label || 'Custom', `${p.calories.toLocaleString('en-US')} cal`, `${p.protein} g protein`];
   if (p.diets.length) parts.push(p.diets.join(', '));
+  if (p.faiths.length) parts.push(p.faiths.map(f => FAITH_DIETS[f].label.toLowerCase()).join(', '));
   if (p.budget) parts.push(`up to $${p.budget} a serving`);
   if (p.allergies.length) {
     const a = p.allergies;

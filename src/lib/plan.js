@@ -2,6 +2,7 @@
 // the browser. "Fill with best fits" picks the best-ranked safe recipe for each meal, rotating through
 // the top choices so the same dish doesn't land on two days in a row.
 import { MEALS, findRecipe } from './recipes.js';
+import { fitsFaith, FAITH_DIETS } from './diets.js';
 import { rankRecipes } from './rank.js';
 import { visibleRecipes } from './profile.js';
 
@@ -75,7 +76,7 @@ export function conflicts(plan, profile) {
       const r = d[m] && findRecipe(d[m]);
       if (!r) continue;
       const clash = r.allergens.filter(a => profile.allergies.includes(a));
-      const diet = profile.diets.filter(x => !r.diets.includes(x));
+      const diet = [...profile.diets.filter(x => !r.diets.includes(x)), ...(profile.faiths || []).filter(f => !fitsFaith(r, [f])).map(f => FAITH_DIETS[f].label.toLowerCase())];
       if (clash.length || diet.length) out.push({ day: DAYS[i], meal: m, recipe: r.name, allergens: clash, diets: diet });
     }
   });

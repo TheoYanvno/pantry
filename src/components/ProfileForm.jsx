@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { GOALS, LIMITS, withGoal, profileSummary } from '../lib/profile.js';
 import { BUDGETS } from '../lib/prices.js';
+import { FAITH_DIETS, FAITHS } from '../lib/diets.js';
 import { DIETS, ALLERGENS } from '../lib/recipes.js';
 
 // The profile form: goal, daily targets and diets. Changes save as you go. On small screens it starts
@@ -51,6 +52,15 @@ export default function ProfileForm({ profile, onChange }) {
         <div className="checks">
           {DIETS.map(d => (
             <label key={d}><input type="checkbox" checked={profile.diets.includes(d)} onChange={() => toggle('diets', d)} /> {d}</label>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Faith-based</legend>
+        <div className="checks faith">
+          {FAITHS.map(f => (
+            <label key={f} title={FAITH_DIETS[f].rule}><input type="checkbox" checked={(profile.faiths || []).includes(f)} onChange={() => toggle('faiths', f)} /> {FAITH_DIETS[f].label}
+              <span className="muted small rule">{FAITH_DIETS[f].rule}</span></label>
           ))}
         </div>
       </fieldset>
