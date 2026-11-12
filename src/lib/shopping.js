@@ -70,13 +70,24 @@ export function mergeUnits(amounts) {
       map.delete(small);
     }
   }
+  // Less than a tablespoon reads better in teaspoons: "1 tsp ginger", not "⅓ tbsp".
+  if (map.has('tbsp') && map.get('tbsp') < 1 && !map.has('tsp')) {
+    map.set('tsp', map.get('tbsp') * 3);
+    map.delete('tbsp');
+  }
   return [...map].map(([unit, qty]) => ({ unit, qty }));
 }
 
-// Counted items read naturally: "2 apples", "1 can tuna in water".
+// Recipes name some counted items in the plural ("2 carrots"); one of them is singular.
+const ONE = { eggs: 'egg', carrots: 'carrot', 'celery stalks': 'celery stalk', 'garlic cloves': 'garlic clove',
+  'lettuce leaves': 'lettuce leaf', 'sweet potatoes': 'sweet potato', 'large flour tortillas': 'large flour tortilla',
+  'corn tortillas': 'corn tortilla' };
+
+// Counted items read naturally: "2 apples", "1 carrot", "1 can tuna in water".
 export function countName(name, qty) {
   const many = qty > 1;
   if (/^cans? /.test(name)) return name.replace(/^cans? /, many ? 'cans ' : 'can ');
+  if (!many && ONE[name]) return ONE[name];
   if (!many || /s$/.test(name) || / /.test(name) && !/^(bell pepper|sweet potato)$/.test(name)) return name;
   return /o$/.test(name) && name !== 'avocado' ? `${name}es` : `${name}s`;
 }

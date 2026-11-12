@@ -51,11 +51,17 @@ test('teaspoons fold into tablespoons, ounces into pounds, and counts read natur
   assert.deepEqual(mergeUnits([{ unit: 'tsp', qty: 3 }, { unit: 'tbsp', qty: 4 }]), [{ unit: 'tbsp', qty: 5 }]);
   assert.deepEqual(mergeUnits([{ unit: 'oz', qty: 8 }, { unit: 'lb', qty: 1 }]), [{ unit: 'lb', qty: 1.5 }]);
   assert.deepEqual(mergeUnits([{ unit: 'tsp', qty: 1 }]), [{ unit: 'tsp', qty: 1 }]);
+  assert.deepEqual(mergeUnits([{ unit: 'tbsp', qty: 1 / 3 }]), [{ unit: 'tsp', qty: 1 }]);
+  assert.deepEqual(mergeUnits([{ unit: 'tbsp', qty: 2 }]), [{ unit: 'tbsp', qty: 2 }]);
   assert.equal(countName('apple', 2), 'apples');
   assert.equal(countName('apple', 1), 'apple');
   assert.equal(countName('cans tuna in water', 1), 'can tuna in water');
   assert.equal(countName('bell pepper', 2), 'bell peppers');
   assert.equal(countName('garlic cloves', 3), 'garlic cloves');
+  assert.equal(countName('carrots', 1), 'carrot');
+  assert.equal(countName('celery stalks', 1), 'celery stalk');
+  assert.equal(countName('eggs', 1), 'egg');
+  assert.equal(itemLine({ name: 'carrots', amounts: [{ unit: '', qty: 0.5 }] }), '1 carrot');
   assert.equal(itemLine({ name: 'lemon', amounts: [{ unit: '', qty: 1.5 }] }), '2 lemons');
   assert.equal(aisleFor('green beans'), 'Produce');
 });
